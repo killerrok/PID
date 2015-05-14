@@ -1,0 +1,10 @@
+void stop()
+{
+  digitalWrite(speedL, LOW);
+  digitalWrite(speedR, LOW);
+  L = 0; R = 0;
+  Dist_left = 0; Dist_right = 0; Dist_center = 0;
+  counter2 = 0;
+ 
+  delay(800);
+}
