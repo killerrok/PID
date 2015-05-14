@@ -1,0 +1,32 @@
+void loop(void)
+{
+  delay(1500);
+  
+  forward(1500);
+  stop();
+ 
+  turnRight(90);
+  stop();
+ 
+  forward(300);
+  stop();
+ 
+  turnRight(90);
+  stop();
+ 
+  forward(1500);
+  stop();
+ 
+  turnRight(90);
+  stop();
+ 
+  forward(300);
+  stop();
+ 
+  turnRight(90);
+  stop();
+ 
+  delay(5000);
+ 
+}
+ 
