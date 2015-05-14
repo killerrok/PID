@@ -1,0 +1,71 @@
+void forward(int counter)
+{
+  while ( Dist_center < counter )
+  {
+    if (counter2 == 0)//начало движения, стартовая скорость
+    {
+      analogWrite(speedL, sL);
+      digitalWrite(motorL, LOW); //LOW - езда вперёд, HIGH - езда назад
+      analogWrite(speedR, sR);
+      digitalWrite(motorR, LOW); //LOW - езда вперёд, HIGH - езда назад
+ 
+      counter2++;
+ 
+      delay(50);
+    }
+ 
+    else
+    {
+      get_distance();
+ 
+      RealLeftSpeed = ( Dist_left - DistL_prev ) / ( millis() - lastTime );
+      RealRightSpeed = ( Dist_right - DistR_prev ) / ( millis() - lastTime );
+ 
+      errorP = RealLeftSpeed - RealRightSpeed; //разница между скоростями колёс
+      errorI = ( Dist_left - Dist_right ) / (millis() - lastTime); //разница между пройденными дистанциями колёс
+      errorD = ( RealLeftSpeed - RealRightSpeed ) / ( (millis() - lastTime) * 0.001); //разница между ускорениями колёс
+      errorD = errorD * ( (millis() - lastTime) * 0.001);
+ 
+      lastTime = millis();
+ 
+      regulator();
+      delay(10);
+ 
+      errorD_prev = errorD;
+      DistL_prev = Dist_left;
+      DistR_prev = Dist_right;
+ 
+      if (errorI != 0)
+      {
+        left = sL - PID_write; 
+ 
+        if ( left < minL ) left = minL;
+        else if ( left > 40000 )  left = 0;
+        else if (left > maxL) left = maxL;
+ 
+        right = sR + PID_write;
+ 
+        if ( right < minR ) right = minR;
+        else if ( right > 40000 ) right = 0;
+        else if (right > maxR) right = maxR;
+ 
+        analogWrite(speedR, right);
+        digitalWrite(motorR, LOW); 
+        analogWrite(speedL, left);
+        digitalWrite(motorL, LOW);
+ 
+        delay(10);
+      }
+ 
+      if ( errorI == 0 )
+      {
+        analogWrite(speedL, sL);
+        digitalWrite(motorL, LOW); 
+        analogWrite(speedR, sR);
+        digitalWrite(motorR, LOW);
+ 
+        delay(10);
+      }
+    }
+  }
+}
